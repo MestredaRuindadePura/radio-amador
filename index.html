@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Rádio Amador</title>
+  <style>
+    body {
+      background: #0b0b0b;
+      color: #00ffcc;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .radio {
+      border: 2px solid #00ffcc;
+      padding: 20px;
+      width: 300px;
+      text-align: center;
+    }
+
+    input {
+      width: 80%;
+      font-size: 18px;
+      background: black;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      text-align: center;
+    }
+
+    .display {
+      margin: 10px 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="radio">
+    <h2>RÁDIO AMADOR</h2>
+
+    <div class="display">
+      Frequência (kHz)
+    </div>
+
+    <input type="number" step="0.1" id="freq" value="42.9">
+
+    <div class="display" id="status">
+      Sinal fraco...
+    </div>
+
+    <audio id="audio" loop></audio>
+  </div>
+
+  <script>
+    const audio = document.getElementById("audio");
+    const status = document.getElementById("status");
+    const freqInput = document.getElementById("freq");
+
+    const stations = {
+      "42.9": {
+        file: "audio/ruído.mp3",
+        text: "Apenas Ruído"
+      },
+      "43.0": {
+        file: "audio/invasor.mp3",
+        text: "Sinal Detectado"
+      },
+      "43.1": {
+        file: "audio/silencio.mp3",
+        text: "Sem sinal"
+      }
+    };
+
+    function tune() {
+      const freq = freqInput.value;
+      const station = stations[freq];
+
+      if (station) {
+        audio.src = station.file;
+        audio.play();
+        status.textContent = station.text;
+      } else {
+        audio.pause();
+        status.textContent = "Nada além de estática...";
+      }
+    }
+
+    freqInput.addEventListener("input", tune);
+    tune();
+  </script>
+
+</body>
+</html>
